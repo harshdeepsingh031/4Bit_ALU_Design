@@ -41,6 +41,7 @@ Verilog HDL - Hardware description language
 Behavioral Simulation - Functional verification via waveform
 
 ## Verilog Source code
+```verilog
 module ALU_4BIT(
     input [3:0] A,
     input [3:0] B,
@@ -92,8 +93,9 @@ begin
        endcase
      end
 endmodule
-
+``` 
 ## Testbench Code
+``` testbench
 module TB_ALU_4BIT;
 
 reg [3:0] A, B;
@@ -131,6 +133,7 @@ initial begin
 end
 
 endmodule
+```
 
 #  How to Run Simulation in Vivado
 Step 1 — Create Project
