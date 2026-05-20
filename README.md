@@ -2,10 +2,12 @@
 An ALU (Arithmetic Logic Unit) is the computational heart of every processor. It performs all the math and logic that a CPU needs to run programs.
 
 # In this project we builds a 4-bit ALU from scratch in Verilog that:
+```
 Takes two 4-bit binary inputs — A and B
 Uses a 4-bit selector (SEL) to choose from 16 different operations
 Outputs a 4-bit result with status flags (Carry, Zero)
 Is fully verified through Vivado Behavioral Simulation with waveform output
+```
 
 ## All 16 Operations
 
