@@ -7,8 +7,9 @@ Uses a 4-bit selector (SEL) to choose from 16 different operations
 Outputs a 4-bit result with status flags (Carry, Zero)
 Is fully verified through Vivado Behavioral Simulation with waveform output
 
-# All 16 Operations
-# SEl(4-bit)           # opertion              #Expression           #Description
+## All 16 Operations
+
+# SEl(4-bit)           # opertion               #Expression           #Description
   0000                   Addition                A+B                   Adds A and B
   0001                   Subtraction             A-B                   subtract B from A
   0010                   Multiplication          A*B                   Multiply A and B
