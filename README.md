@@ -1,159 +1,175 @@
-# 4Bit_ALU_Design
-# 🔢 4-Bit ALU (Arithmetic Logic Unit)
+# What is an ALU?
+An ALU (Arithmetic Logic Unit) is the computational heart of every processor. It performs all the math and logic that a CPU needs to run programs.
 
-> A fully functional 4-bit Arithmetic Logic Unit (ALU) built using logic gates — capable of performing arithmetic and logical operations on 4-bit binary numbers.
+# In this project we builds a 4-bit ALU from scratch in Verilog that:
+Takes two 4-bit binary inputs — A and B
+Uses a 4-bit selector (SEL) to choose from 16 different operations
+Outputs a 4-bit result with status flags (Carry, Zero)
+Is fully verified through Vivado Behavioral Simulation with waveform output
 
----
+# All 16 Operations
+# SEl(4-bit)           # opertion              #Expression           #Description
+  0000                   Addition                A+B                   Adds A and B
+  0001                   Subtraction             A-B                   subtract B from A
+  0010                   Multiplication          A*B                   Multiply A and B
+  0011                   Divison                 A/B                   Divide A and B
+  0100                   Logical shift left      A<<1                  Logical Shift left A by 1 one bit
+  0101                   Logical shift Right     A>>1                  Logical Shift right A by 1 one bit
+  0110                   Rotate Left             {A[2:0],A[3]}         rotate left A
+  0111                   Rotate right            {A[0],A[3:1]}         rotate right A
+  1000                   AND                      A & B                Bitwise AND
+  1001                   OR                       A | B                Bitwise OR
+  1010                   XOR                      A ^ B                Bitwise XOR
+  1011                   NOR                     ~(A | B)              Bitwise NOR
+  1100                   NAND                    ~(A & B )             Bitwise NAND
+  1101                   XNOR                    ~(A ^ B)              Bitwise XNOR
+  1110                  Greater comparison       (A>B)?4'd1:d0         Comparison between A and B
+  1111                  Equal Comparison          (A=B)?4'd1:d0        Equal Comparison between A nd B
 
-## 📌 What is an ALU?
+  # Port Description
 
-An **ALU (Arithmetic Logic Unit)** is the brain of a CPU. It performs all the **math** (like addition and subtraction) and **logic** (like AND, OR, NOT) operations inside a computer.
+  # Port                  # Width                 # Direction          # Description
+    A                       4 Bit                    Input                First Operand
+    B                       4 Bit                    Input                Second Operand
+    ALU_SEL                 4 Bit                    Input                Selects one of 16 opertion
+    ALU_OUT                 4 Bit                    Output               ouput of selected line
+    Carryout                1 Bit                    Output               Carry out from ADD and Borrow from SUB
 
-This project implements a **4-bit ALU**, which means it works with 4-bit binary numbers (values from `0000` to `1111`, i.e., 0 to 15 in decimal).
+ # Tools & Technologies
+Tool  Xilinx Vivado - HDL design entry and simulation
+Verilog HDL - Hardware description language 
+Behavioral Simulation - Functional verification via waveform
 
----
+# Verilog Source code
+module ALU_4BIT(
+    input [3:0] A,
+    input [3:0] B,
+    input [3:0] ALU_sel,
+    output [3:0] ALU_OUT,
+    output Carryout
+    );
+reg [3:0] ALU_result;
+wire[4:0] tmp;
+assign ALU_OUT= ALU_result;
+assign tmp = {1'b0,A} + {1'b0,B};
+assign Carryout = tmp[4];
+always @(*)
+begin
+     case(ALU_sel)
+     4'b0000:// addition
+         ALU_result = A + B;
+     4'b0001:// subtraction
+          ALU_result = A - B;
+     4'b0010:// Multiplication
+          ALU_result = A * B;
+     4'b0011://Divison
+          ALU_result = A/B;
+     4'b0100://Logical shift left
+          ALU_result = A<<1;
+     4'b0101:// logical shift right
+          ALU_result = A>>1;
+     4'b0110:// rotate left
+          ALU_result = {A[2:0],A[3]};
+     4'b0111: // rotate right
+          ALU_result = {A[0],A[3:1]};
+      4'b1000:  // logical and
+          ALU_result = A & B ;
+      4'b1001: //logical or
+          ALU_result = A | B;
+      4'b1010: //logical xor
+          ALU_result = A ^ B;
+      4'b1011: //logical nor
+          ALU_result = ~(A | B);
+      4'b1100:// logical nand
+           ALU_result =  ~( A & B);
+      4'b1101: // logical xnor
+           ALU_result = ~(A ^ B);
+      4'b1110:// greater comparison
+           ALU_result = (A>B)?4'd1:4'd0;
+      4'b1111: // equal comparison
+           ALU_result = (A==B)?4'D1:4'D0 ;
+        default: ALU_result = A + B;
+       endcase
+     end
+endmodule
 
-## ✨ Features
+# Testbench Code
+module TB_ALU_4BIT;
 
-- ✅ 4-bit binary **Addition**
-- ✅ 4-bit binary **Subtraction** (using 2's complement)
-- ✅ Bitwise **AND**
-- ✅ Bitwise **OR**
-- ✅ Bitwise **NOT / Complement**
-- ✅ Bitwise **XOR**
-- ✅ **Carry Out** flag for overflow detection
-- ✅ **Zero flag** — indicates when result is zero
+reg [3:0] A, B;
+reg [3:0] ALU_sel;
+wire [3:0] ALU_OUT;
+wire Carryout;
 
----
+ALU_4BIT uut (
+    .A(A),
+    .B(B),
+    .ALU_sel(ALU_sel),
+    .ALU_OUT(ALU_OUT),
+    .Carryout(Carryout)
+);
 
-## 🧠 How It Works
+initial begin
+    A = 4'b0011; B = 4'b0001;
+    
+    ALU_sel = 4'b0000; #200;
+    ALU_sel = 4'b0001; #200;
+    ALU_sel = 4'b0010; #200;
+    ALU_sel = 4'b0011; #200;
+    ALU_sel = 4'b0100; #200;
+    ALU_sel = 4'b0101; #200;
+    ALU_sel = 4'b0111; #200;
+    ALU_sel = 4'b1000; #200;
+    ALU_sel = 4'b1001; #200;
+    ALU_sel = 4'b1010; #200;
+    ALU_sel = 4'b1011; #200;
+    ALU_sel = 4'b1100; #200;
+    ALU_sel = 4'b1101; #200;
+    ALU_sel = 4'b1110; #200;
+    ALU_sel = 4'b1111; #200;
+    $finish;
+end
 
-The ALU takes:
+endmodule
 
-| Input | Description |
-|-------|-------------|
-| `A [3:0]` | First 4-bit operand |
-| `B [3:0]` | Second 4-bit operand |
-| `SEL [2:0]` | Operation selector (3-bit control signal) |
+#  How to Run Simulation in Vivado
+Step 1 — Create Project
+Open Vivado - Click Create Project
+Select RTL Project -choose Do not specify sources at this time
+Select your target device/board
 
-And gives:
+Step 2 — Add Files
+Click Add Sources - Add Design Sources → add src/alu.v
+Click Add Sources again → Add Simulation Sources - add testbench/alu_tb.v
 
-| Output | Description |
-|--------|-------------|
-| `Result [3:0]` | 4-bit output of the operation |
-| `Carry` | Carry bit (overflow for addition) |
-| `Zero` | 1 if result is 0000, else 0 |
+Step 3 — Run Simulation
 
-### Operation Table
+In Flow Navigator (left panel) - click Run Simulation
+Select Run Behavioral Simulation
+In the waveform window - right-click - Add All Signals
+Click Run All
+Check the waveform — verify all 16 operations produce correct output
 
-| SEL (Binary) | Operation | Description |
-|:---:|:---:|---|
-| `000` | A + B | Addition |
-| `001` | A - B | Subtraction |
-| `010` | A AND B | Bitwise AND |
-| `011` | A OR B | Bitwise OR |
-| `100` | A XOR B | Bitwise XOR |
-| `101` | NOT A | Bitwise complement of A |
-| `110` | A << 1 | Left Shift (if implemented) |
-| `111` | A >> 1 | Right Shift (if implemented) |
+# Simulation Waveforms
+<img width="1907" height="996" alt="ALU output" src="https://github.com/user-attachments/assets/4b60bce2-922b-4e08-be63-79c89ddec75d" />
+# ALU OUTPUT
 
-> ⚠️ SEL values may vary based on your specific implementation. Refer to your source code for the exact mapping.
+<img width="1902" height="894" alt="layout design" src="https://github.com/user-attachments/assets/d74e163b-70c1-44fb-be38-45f3ed23d93f" />
+ # ALU LAYOUT DESIGN
 
----
+ <img width="1580" height="801" alt="sechmatic design" src="https://github.com/user-attachments/assets/d5c8ceea-c75e-4050-adee-f93f39ff3034" />
+ # SECHMATIC DESIGN
 
-## 🛠️ Tools & Technologies Used
+# Key Concepts Covered
 
-- **Hardware Description Language:** Verilog / VHDL *(or whichever you used)*
-- **Simulation Tool:** ModelSim / Xilinx ISE / Logisim / Quartus *(edit as needed)*
-- **Target Device:** FPGA / Educational Simulation *(edit as needed)*
+Verilog HDL — writing clean combinational logic using always @(*) and case
+Arithmetic operations — binary addition, subtraction, 2's complement
+Bitwise logic — AND, OR, XOR, NAND, NOR, XNOR, NOT
+Shift operations — SHL (left shift), SHR (right shift)
+Comparison logic — greater than, equal to
+Status flags — Carry out, Zero detection
+Vivado simulation — testbench writing, waveform analysis
 
----
-
-## 📁 Project Structure
-
-```
-4-bit-ALU/
-│
-├── src/
-│   ├── alu.v            # Main ALU module
-│   ├── adder.v          # 4-bit full adder
-│   └── logic_unit.v     # Logic operations module
-│
-├── testbench/
-│   └── alu_tb.v         # Testbench for simulation
-│
-├── simulation/
-│   └── waveform.png     # Output waveform screenshot
-│
-└── README.md
-```
-
-> 📝 Update the folder structure above to match your actual project files.
-
----
-
-## ▶️ How to Run / Simulate
-
-### Using ModelSim
-```bash
-# 1. Open ModelSim
-# 2. Compile the design
-vlog src/alu.v
-
-# 3. Compile the testbench
-vlog testbench/alu_tb.v
-
-# 4. Run simulation
-vsim alu_tb
-run -all
-```
-
-### Using Logisim
-1. Open Logisim
-2. Load the `.circ` file from the `src/` folder
-3. Use the input pins to provide values for A, B, and SEL
-4. Observe the output on the result pins
-
----
-
-## 🧪 Example Test Cases
-
-| A (Binary) | B (Binary) | SEL | Operation | Result | Carry |
-|:---:|:---:|:---:|:---:|:---:|:---:|
-| `0011` (3) | `0101` (5) | `000` | A + B | `1000` (8) | 0 |
-| `1111` (15) | `0001` (1) | `000` | A + B | `0000` (0) | 1 |
-| `1010` (10) | `0011` (3) | `001` | A - B | `0111` (7) | 0 |
-| `1100` | `1010` | `010` | A AND B | `1000` | - |
-| `1100` | `1010` | `011` | A OR B | `1110` | - |
-| `1111` | - | `101` | NOT A | `0000` | - |
-
----
-
-# Simulation Output<img width="1907" height="996" alt="ALU output" src="https://github.com/user-attachments/assets/7ac81102-8877-4572-b131-bc839a9cffd4" />
-           ALU OUTPUT
-<img width="1902" height="894" alt="layout design" src="https://github.com/user-attachments/assets/163ef50e-6cf8-43b5-99cf-6161eceedddc" />
-           ALU LAYOUT DESIGN
-<img width="1580" height="801" alt="sechmatic design" src="https://github.com/user-attachments/assets/b1f763cc-cfd8-4157-8878-18eaef9d5415" />
-           SECHMATIC DESIGN
-
-# Concepts You'll Learn from This Project
-
-1. How binary addition and subtraction works
-2.What 2's complement is and how it's used for subtraction
-3. How logic gates (AND, OR, XOR, NOT) work in combination
-4.How a control signal (SEL) selects between operations
-5.How carry and zero flags work in a real CPU
-
----
-
-# About
-This project was built as part of a **Digital Electronics / Computer Organization** course to understand how low-level hardware computation works from the ground up.
-
-
-
-
-
-
-
-
-> ⭐ If you found this helpful, consider giving the repo a star!
+#  About
+This project was built as part of a Digital Logic Design / Computer Organization course to understand how an ALU works at the hardware level — from writing Verilog code to verifying it with simulation waveforms in Vivado.
+   
