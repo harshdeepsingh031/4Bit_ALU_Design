@@ -40,7 +40,7 @@ Tool  Xilinx Vivado - HDL design entry and simulation
 Verilog HDL - Hardware description language 
 Behavioral Simulation - Functional verification via waveform
 
-# Verilog Source code
+## Verilog Source code
 module ALU_4BIT(
     input [3:0] A,
     input [3:0] B,
@@ -93,7 +93,7 @@ begin
      end
 endmodule
 
-# Testbench Code
+## Testbench Code
 module TB_ALU_4BIT;
 
 reg [3:0] A, B;
