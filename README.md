@@ -9,23 +9,27 @@ Is fully verified through Vivado Behavioral Simulation with waveform output
 
 ## All 16 Operations
 
-# SEl(4-bit)           # opertion               #Expression           #Description
-  0000                   Addition                A+B                   Adds A and B
-  0001                   Subtraction             A-B                   subtract B from A
-  0010                   Multiplication          A*B                   Multiply A and B
-  0011                   Divison                 A/B                   Divide A and B
-  0100                   Logical shift left      A<<1                  Logical Shift left A by 1 one bit
-  0101                   Logical shift Right     A>>1                  Logical Shift right A by 1 one bit
-  0110                   Rotate Left             {A[2:0],A[3]}         rotate left A
-  0111                   Rotate right            {A[0],A[3:1]}         rotate right A
-  1000                   AND                      A & B                Bitwise AND
-  1001                   OR                       A | B                Bitwise OR
-  1010                   XOR                      A ^ B                Bitwise XOR
-  1011                   NOR                     ~(A | B)              Bitwise NOR
-  1100                   NAND                    ~(A & B )             Bitwise NAND
-  1101                   XNOR                    ~(A ^ B)              Bitwise XNOR
-  1110                  Greater comparison       (A>B)?4'd1:d0         Comparison between A and B
-  1111                  Equal Comparison          (A=B)?4'd1:d0        Equal Comparison between A nd B
+
+
+| SEI (4-bit) | Operation | Expression | Description |
+|:----------:|-----------|-----------|-------------|
+| `0000` | Addition | `A + B` | Adds A and B |
+| `0001` | Subtraction | `A - B` | Subtracts B from A |
+| `0010` | Multiplication | `A * B` | Multiplies A and B |
+| `0011` | Division | `A / B` | Divides A by B |
+| `0100` | Logical Shift Left | `A << 1` | Shifts A left by 1 bit |
+| `0101` | Logical Shift Right | `A >> 1` | Shifts A right by 1 bit |
+| `0110` | Rotate Left | `{A[2:0], A[3]}` | Rotates A left by 1 bit |
+| `0111` | Rotate Right | `{A[0], A[3:1]}` | Rotates A right by 1 bit |
+| `1000` | AND | `A & B` | Bitwise AND |
+| `1001` | OR | `A \| B` | Bitwise OR |
+| `1010` | XOR | `A ^ B` | Bitwise XOR |
+| `1011` | NOR | `~(A \| B)` | Bitwise NOR |
+| `1100` | NAND | `~(A & B)` | Bitwise NAND |
+| `1101` | XNOR | `~(A ^ B)` | Bitwise XNOR |
+| `1110` | Greater Comparison | `(A > B) ? 4'd1 : 4'd0` | Outputs 1 if A > B, else 0 |
+| `1111` | Equal Comparison | `(A == B) ? 4'd1 : 4'd0` | Outputs 1 if A = B, else 0 |
+
 
   # Port Description
 
