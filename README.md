@@ -43,9 +43,11 @@ Is fully verified through Vivado Behavioral Simulation with waveform output
     Carryout                1 Bit                    Output               Carry out from ADD and Borrow from SUB
 
  # Tools & Technologies
+ ```
 Tool  Xilinx Vivado - HDL design entry and simulation
 Verilog HDL - Hardware description language 
 Behavioral Simulation - Functional verification via waveform
+```
 
 ## Verilog Source code
 ```verilog
