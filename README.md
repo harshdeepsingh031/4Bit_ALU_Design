@@ -169,7 +169,7 @@ Check the waveform — verify all 16 operations produce correct output
  # SECHMATIC DESIGN
 
 # Key Concepts Covered
-
+```
 Verilog HDL — writing clean combinational logic using always @(*) and case
 Arithmetic operations — binary addition, subtraction, 2's complement
 Bitwise logic — AND, OR, XOR, NAND, NOR, XNOR, NOT
@@ -177,7 +177,7 @@ Shift operations — SHL (left shift), SHR (right shift)
 Comparison logic — greater than, equal to
 Status flags — Carry out, Zero detection
 Vivado simulation — testbench writing, waveform analysis
-
+```
 #  About
 This project was built as part of a Digital Logic Design / Computer Organization course to understand how an ALU works at the hardware level — from writing Verilog code to verifying it with simulation waveforms in Vivado.
    
